@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Song</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form th:action="@{/songs/edit/{id}(id=${song.id})}" method="POST">
+                <input id="id" type="hidden" name="id" th:value="${song != null ? song.id : ''}">
+
+                <div class="form-group">
+                    <label for="title">Song Title</label>
+                    <input type="text"
+                           class="form-control"
+                           id="title"
+                           name="title"
+                           th:value="${song != null ? song.title : ''}"
+                           required
+                           placeholder="Enter song title">
+                </div>
+
+                <div class="form-group">
+                    <label for="trackId">Track ID</label>
+                    <input type="text"
+                           class="form-control"
+                           id="trackId"
+                           name="trackId"
+                           th:value="${song != null ? song.trackId : ''}"
+                           required
+                           placeholder="Enter track ID">
+                </div>
+
+                <div class="form-group">
+                    <label for="genre">Genre</label>
+                    <input type="text"
+                           class="form-control"
+                           id="genre"
+                           name="genre"
+                           th:value="${song != null ? song.genre : ''}"
+                           placeholder="Enter genre">
+                </div>
+
+                <div class="form-group">
+                    <label for="releaseYear">Release Year</label>
+                    <input type="number"
+                           class="form-control"
+                           id="releaseYear"
+                           name="releaseYear"
+                           th:value="${song != null ? song.releaseYear : ''}"
+                           placeholder="Enter release year">
+                </div>
+
+                <div class="form-group">
+                    <label>Album</label>
+                    <select name="albumId" class="form-control">
+                        <option th:if="${song != null}"
+                                th:selected="${song.album != null && song.album.id == album.id}"
+                                th:each="album : ${albums}"
+                                th:value="${album.id}"
+                                th:text="${album.name}">
+                        </option>
+                        <option th:if="${song == null}"
+                                th:each="album : ${albums}"
+                                th:value="${album.id}"
+                                th:text="${album.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/songs">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

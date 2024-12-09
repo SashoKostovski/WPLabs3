@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Song List</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to My Music Store</h1>
+</header>
+<main>
+    <h2>Available Songs:</h2>
+    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+    <form th:method="POST" th:action="@{/artist/artist-list}">
+        <table>
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Release Year</th>
+                <th>Album</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="song : ${songList}">
+                <!-- Radio button for song selection -->
+                <td>
+                    <input type="radio" name="songRadio" th:id="${song.trackId}" th:value="${song.trackId}">
+                </td>
+                <td th:text="${song.title}">Song Title</td>
+                <td th:text="${song.genre}">Song Genre</td>
+                <td th:text="${song.releaseYear}">Song Release Year</td>
+                <td th:text="${song.album != null ? song.album.name : 'N/A'}">Album Name</td>
+                <td>
+                    <a th:href="@{/songs/edit-form/{id}(id=${song.id})}">Edit</a>
+                    <form th:action="@{/songs/delete/{id}(id=${song.id})}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <!-- Submit button for song selection -->
+        <input type="submit" value="Submit Selected Song">
+    </form>
+
+    <h2>Add a Song:</h2>
+    <form th:action="@{/songs/add}" method="post">
+        <input type="text" name="title" placeholder="Song Title" required>
+        <input type="text" name="trackId" placeholder="Track ID" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="number" name="releaseYear" placeholder="Release Year" required>
+        <select name="albumId" required>
+            <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"></option>
+        </select>
+        <button type="submit">Add Song</button>
+    </form>
+
+    <a href="/songs/add-form" class="btn btn-primary">Add New Song</a>
+</main>
+</body>
+</html>
