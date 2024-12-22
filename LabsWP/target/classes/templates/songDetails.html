@@ -1,22 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="">
 <head>
     <meta charset="utf-8">
     <title>Song Details</title>
-
 </head>
 <body>
 <header>
-    <h1 th:text="${entity.getTitle()}">Song title</h1>
+    <h1 th:text="${entity.title}">Song Title</h1>
 </header>
 <section>
-    <h2 th:text="${entity.getGenre()}">Genre</h2>
-    <h2 th:text="${entity.getReleaseYear()}">Year</h2>
+    <h2>Genre: <span th:text="${entity.genre}">Genre</span></h2>
+    <h2>Release Year: <span th:text="${entity.releaseYear}">Year</span></h2>
     <h2>Performers:</h2>
     <ul>
-        <li th:each="artist : ${entity.getPerformers()}" th:text="${artist.getFirstName()} + ' ' + ${artist.getLastName()}" >Jon Bon Jovi</li>
+        <li th:each="artist : ${entity.performers}" th:text="${artist.firstName} + ' ' + ${artist.lastName}">Performer</li>
     </ul>
 </section>
-<a type="button" class="btn btn-primary" href="/listSongs">Back</a>
+
+<!-- Button to navigate to artistList -->
+
+
+<!-- Back button -->
+<div>
+    <th:block sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/artist/artist-list(trackId=${entity.trackId})}" class="btn btn-primary">Go to Artist List</a>
+    </th:block>
+</div>
+<div sec:style="margin-top: 20px;">
+    <a href="/songs" class="btn btn-primary">Back to Songs</a>
+</div>
+
+
+
 </body>
 </html>

@@ -1,8 +1,10 @@
 package mk.ukim.finki.wp.lab.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.wp.lab.model.Album;
+import mk.ukim.finki.wp.lab.model.Artist;
 import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.services.AlbumService;
+import mk.ukim.finki.wp.lab.services.ArtistService;
 import mk.ukim.finki.wp.lab.services.SongService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,12 @@ public class SongController {
 
     private final SongService songService;
     private final AlbumService albumService;
+    private final ArtistService artistService;
 
-    public SongController(SongService songService, AlbumService albumService) {
+    public SongController(SongService songService, AlbumService albumService, ArtistService artistService) {
         this.songService = songService;
         this.albumService = albumService;
+        this.artistService = artistService;
     }
 
     @GetMapping
@@ -87,5 +91,19 @@ public class SongController {
     public String deleteSong(@PathVariable Long id) {
         songService.delete(id);
         return "redirect:/songs";
+    }
+
+    @GetMapping("/song-details")
+    public String getSongDetails(@RequestParam String trackId, Model model) {
+        // Retrieve the song by track ID
+        Song song = songService.findByTrackId(trackId);
+        if (song == null) {
+            model.addAttribute("error", "Song not found!");
+            return "redirect:/songs";
+        }
+
+        // Add the song to the model
+        model.addAttribute("entity", song);
+        return "songDetails"; // Render the songDetails.html template
     }
 }

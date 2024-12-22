@@ -33,11 +33,26 @@
 </header>
 <section>
     <h2>Select artist:</h2>
-    <form th:method="POST" th:action="@{/songs/song-details}">
-        <input type="hidden" name="trackId" th:value="${trackId}" />
-        <div th:each="artist : ${artistList}">
-            <input type="radio" name="artistId" th:id="${artist.getId()}" th:value="${artist.getId()}" />
-            <label th:for="${artist.getId()}" th:text="${artist.getFirstName()} + ' ' + ${artist.getLastName()}"></label>
+    <form method="POST" action="/songs/song-details">
+        <input type="hidden" name="trackId" value="-" />
+        <div>
+            <input type="radio" name="artistId" id="1" value="1" />
+            <label for="1">Johnny Cash</label>
+            <br/>
+        </div>
+        <div>
+            <input type="radio" name="artistId" id="2" value="2" />
+            <label for="2">Marshall Mathers</label>
+            <br/>
+        </div>
+        <div>
+            <input type="radio" name="artistId" id="3" value="3" />
+            <label for="3">Frank Sinatra</label>
+            <br/>
+        </div>
+        <div>
+            <input type="radio" name="artistId" id="4" value="4" />
+            <label for="4">Micheal  Jackson</label>
             <br/>
         </div>
         <br/>
@@ -49,7 +64,7 @@
     <table>
         <tr>
             <td><b>Track Id</b></td>
-            <td th:text="${trackId}">2</td>
+            <td th:text="${trackId}">-</td>
         </tr>
     </table>
 </aside>
