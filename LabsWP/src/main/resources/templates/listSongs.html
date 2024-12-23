@@ -35,14 +35,20 @@
                 <td th:text="${song.genre}">Song Genre</td>
                 <td th:text="${song.releaseYear}">Song Release Year</td>
                 <td th:text="${song.album != null ? song.album.name : 'N/A'}">Album Name</td>
-                <th:block sec:authorize="hasRole('ADMIN')">
-                    <td>
+                <td>
+                    <th:block sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
+
                         <a th:href="@{/songs/edit-form/{id}(id=${song.id})}">Edit</a>
+
+
+                    </th:block>
+                    <th:block sec:authorize="hasAnyRole('ADMIN')">
                         <form th:action="@{/songs/delete/{id}(id=${song.id})}" method="post" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
-                    </td>
-                </th:block>
+                    </th:block>
+                </td>
+
             </tr>
             </tbody>
         </table>

@@ -33,11 +33,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/listSongs", "/songs", "/assets/**", "/register", "/artist/artist-list", "/songs/song-details")
+                        .requestMatchers("/", "/h2" , "/listSongs", "/songs", "/assets/**", "/register", "/artist/artist-list", "/songs/song-details")
                         .permitAll()
-                        .anyRequest().hasRole("ADMIN")
+                        .anyRequest().hasAnyRole("ADMIN", "MODERATOR")
+
+
                 )
+
                 .formLogin(form -> form
                         .permitAll()
                         .defaultSuccessUrl("/listSongs")
@@ -74,8 +78,13 @@ public class WebSecurityConfig {
                 .password(passwordEncoder.encode("admin"))
                 .roles("ADMIN")
                 .build();
+        UserDetails moderator = User.builder()
+                .username("moderator")
+                .password(passwordEncoder.encode("moderator"))
+                .roles("MODERATOR")
+                .build();
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, admin);
+        return new InMemoryUserDetailsManager(user1, user2, user3, admin, moderator);
     }
 
 
